@@ -29,8 +29,8 @@ $cards = [];
 
 for ($i = 0; $i < $_SESSION['pairNmbr']*2; $i++) {
     $f = $i + 1;
-    $cards[$i] = new Card($i, './img/img'.$i.'.jpg', 'https://plus.unsplash.com/premium_photo-1673264730588-3ba81bd5571c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80');
-    $cards[$f] = new Card($f, './img/img'.$i.'.jpg', 'https://plus.unsplash.com/premium_photo-1673264730588-3ba81bd5571c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80');
+    $cards[$i] = new Card($i, './img/img'.$i.'.jpg', './img/back.jpg');
+    $cards[$f] = new Card($f, './img/img'.$i.'.jpg', './img/back.jpg');
     $i++;     
 }
 
@@ -263,7 +263,7 @@ isEnd();
                 <h3>Your score is: <?=$finalCount?></h3>
                 <div class="end-ann_container__add-block">
                     <form action="" method="post">
-                        <h4>Type your name here: </h4>
+                        <h4>entrez votre nom: </h4>
                         <input type="text" name="username">
                         <input type="submit" class="restart" name="adduser" value="Add User">
                     </form>

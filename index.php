@@ -30,9 +30,9 @@ if(isset($_SESSION)) {
         <div class="homepage-container">
             <h1>Memory Game</h1>
             <?php if (isset($_POST['start']) && (gettype($_POST['start']) != 'integer' || $_POST['start'] > 12 || $_POST['start'] < 2)): ?>
-            <p><i>Please type a number between 2 and 12</i></p>
+            <p><i>Minimum 2 / maximum 12 </i></p>
             <?php endif;?>
-            <h2>Choose a quantity of pairs (12 max.)</h2>
+            <h2>Selectionner un nombre de paire entre 2 et 12</h2>
             <form action="" method="post">
                 <input type="text" name="start" class="restart">
                 <input type="submit" value="START GAME" class="restart">

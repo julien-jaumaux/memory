@@ -11,7 +11,7 @@ function showAllProfiles()
 
 function showProfileRecords($req) {
     $mysqli = new mysqli('localhost', 'root', '', 'memory');
-    $query = "SELECT name, score FROM utilisateurs WHERE name = '$req' ORDER BY score DESC";
+    $query = "SELECT * FROM utilisateurs ORDER BY score DESC";
     $result = $mysqli->query($query);
     $result = $result->fetch_all();
     return $result;
@@ -46,9 +46,9 @@ function showProfileRecords($req) {
             <div class="profiles-container__right-block">
                 <div class="profiles-container__content-block">
                         <div class="content-block__container">
-                            <h2>All score for <u><?=$_POST['user']?></u>:</h2>
-                            <?php foreach (showProfileRecords($_POST['user']) as $val): ?>                                
-                                <p><?=$val[1]?> points at</p>
+                            <h2>All score for <u><?php $_SESSION['user'] = ['name'];?></u>:</h2>
+                            <?php foreach (showProfileRecords($_SESSION['user']) as $val): ?>                                
+                                <p><?=$val[1]?> score</p>
                                 <p class="date"><i><?=$val[2]?></i></p>
                             <?php endforeach; ?>
                         </div>

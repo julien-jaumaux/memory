@@ -2,6 +2,10 @@
 
 class Card
 {
+    public $id;
+    public $img;
+    public $revSideImg;
+    
     public function __construct($id, $img, $revSideImg)
     {
         $this->id = $id + 1;
