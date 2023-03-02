@@ -1,15 +1,16 @@
 <?php
 error_reporting(E_ERROR | E_PARSE);
+//---appelle de la class card et des fonction qui peuvebt lui être appliquées----//
 include('Card.php');
 session_start();
-
+//-------attribue un score à la session en fonction du nombre de clic----//
 if(!isset($_SESSION['count'])) {
     $_SESSION['count'] = 0;
 } else {
     $_SESSION['count']++; 
 }
 
-
+// mélange et redistribue de façon aléatoire le nombre de carte définie par $_SESSION['pairNmbr]//
 if (!isset($_SESSION['order'])) {
     $_SESSION['order'] = [];
 
@@ -19,14 +20,16 @@ if (!isset($_SESSION['order'])) {
     
     shuffle($_SESSION['order']);    
 }
-
+//----ici on récupère le nom de l'utilisateur en fin de partie et son score pour le placer en base de
+//données avec la méthode post------//
 if (isset($_POST['adduser'])) {
     adduser($_POST['username'], $_COOKIE['score']);
     showTopScorers();    
 }
 
 $cards = [];
-
+// on fait appel à la classe "card" pour appliquer la méthode de cette class : assigner une carte et
+//son double ($i + $f), appliquer l'image qui lui correspond ainsi que le dos de la carte sur chacune d'elles (new Card), l'id de chaques cartes correspond à sa place sur le tableau.
 for ($i = 0; $i < $_SESSION['pairNmbr']*2; $i++) {
     $f = $i + 1;
     $cards[$i] = new Card($i, './img/img'.$i.'.jpg', './img/back.jpg');
@@ -36,21 +39,24 @@ for ($i = 0; $i < $_SESSION['pairNmbr']*2; $i++) {
 
 function verify($key, $pairsNumber)
 {
+    //--(ici on compare la correspondance des [clé] qui une valeur de chaine de caractère qui valent 5 (imgo->img8) )
     if (strlen($key) == 5) {
         $charToVerify = (int) $key[-1];
-
+        
         if ($charToVerify % 2 != 0) {
             $lastChar = (int) $key[-1] + 1;
             $val = substr($key, 0, -1);
             $cellUp = $val . $lastChar;
-
+            //---condition de clic (post) sur la première carte et maintien de la position retournée---//
             if (
                 isset($_POST[$key]) && $_POST[$key] == $key &&
                 (!isset($_SESSION['verify']) || $_SESSION['verify'] != 'stanby')
             ) {
                 $_SESSION[$key] = 'on';
                 $_SESSION['verify'] = 'stanby';
+
             } elseif (
+                  
                 isset($_POST[$key]) && $_POST[$key] == $key &&
                 isset($_SESSION['verify']) && $_SESSION['verify'] == 'stanby' &&
                 isset($_SESSION[$cellUp]) && $_SESSION[$cellUp] == 'on'
@@ -69,7 +75,7 @@ function verify($key, $pairsNumber)
 
                 $_SESSION['verify'] = '';
             }
-
+// condition de correspondance entre les deux cartes: elles restent en vue---//
             if (
                 isset($_SESSION[$key]) && $_SESSION[$key] == 'on' &&
                 isset($_SESSION[$cellUp]) && $_SESSION[$cellUp] == 'on'
@@ -78,6 +84,7 @@ function verify($key, $pairsNumber)
             }
 
         } else {
+            //si condition non vérifiées les cartes sont replacées face retournée----///
             $lastChar = (int) $key[-1] - 1;
             $val = substr($key, 0, -1);
             $cellDown = $val . $lastChar;
@@ -115,9 +122,9 @@ function verify($key, $pairsNumber)
                 $_SESSION['corr' . $lastChar . $charToVerify] = 'yes';
             }
         }
+        //--- même comportement que si dessus mais avec des [clé] de 6 caractères (img de 10->22)
     } elseif (strlen($key) == 6) {
         $charToVerify = (int) $key[-2]. (int) $key[-1];
-
         if ($charToVerify % 2 != 0) { 
             $lastChar = $charToVerify + 1;
             $val = substr($key, 0, -2);
@@ -199,7 +206,7 @@ function verify($key, $pairsNumber)
 
 function isEnd() {
     $corrNumber = 0;
-
+// la fonction verifie si le nombre de correspondance est égal au nombre de paire choisies au départ. Si la condition est remplie la partieest terminée
     for ($i = 1; $i <= $_SESSION['pairNmbr']*2; $i = $i + 2) {
         $f = $i + 1;
         $verifVar = 'corr' . $i . $f;
@@ -213,13 +220,13 @@ function isEnd() {
         setcookie('score', round($_SESSION['pairNmbr'] / ($_SESSION['count'] != 0 ? $_SESSION['count'] : 1)  * 100));
     }
 }
-
+//fonction qui permet d'ajouter le score des joueurs dans la base de données
 function adduser($username, $final) {    
     $mysqli = new mysqli('localhost', 'root', '', 'memory');
     $query = "INSERT INTO utilisateurs (id, name, score) VALUES (null, '$username', '$final')";
     $mysqli->query($query);    
 }
-
+//fonction qui trie le classement par ordre de sore décroissant
 function showTopScorers() {
     $mysqli = new mysqli('localhost', 'root', '', 'memory');
     $query = "SELECT name, score FROM utilisateurs ORDER BY score DESC LIMIT 10";
@@ -248,7 +255,7 @@ isEnd();
     <title>Document</title>
     <link rel="stylesheet" href="./style/style.css">
 </head>
-
+<!--fin de partie, on affiche le classement, l'input qui permet de s'enregister en base de données et on peut lancer une nouvelle partie-->
 <body>       
     <?php if ($_SESSION['end'] == 'yes'):
         $finalCount = (int) round($_SESSION['pairNmbr'] / ($_SESSION['count'] != 0 ? $_SESSION['count'] : 1)  * 100); 
@@ -296,7 +303,7 @@ isEnd();
     <div class="game-container">                
         <div class="game">            
             <?php foreach ($cards as $key=>$val): ?>
-
+<!-- ci desuus on génère l'affichage du tableau de jeu en utilisan les méthodes apliquer à la classe card-->
             <div class="game-cell" style="order: <?=$_SESSION['order'][$key]?>;">
                 <form action="" method="post" style="<?= isset($_SESSION[$val->generateNum()]) && $_SESSION[$val->generateNum()] == 'yes' ? 'display: none' : ''?>">
                     <input type="submit" name=<?=$val->cellNumber()?> value=<?=$val->cellNumber()?>>
