@@ -46,7 +46,7 @@ function showProfileRecords($req) {
             <div class="profiles-container__right-block">
                 <div class="profiles-container__content-block">
                         <div class="content-block__container">
-                            <h2>All score for <u><?php $_SESSION['user'] = ['name'];?></u>:</h2>
+                            <h2>Classement général <u><?php $_SESSION['user'] = ['name'];?></u>:</h2>
                             <?php foreach (showProfileRecords($_SESSION['user']) as $val): ?>                                
                                 <p><?=$val[1]?> score</p>
                                 <p class="date"><i><?=$val[2]?></i></p>
@@ -55,7 +55,7 @@ function showProfileRecords($req) {
                 </div>
                 <div class="profiles-container__backwards-block">
                     <form action="./index.php" method="post">
-                        <input type="submit" value="BACK TO MAIN PAGE">
+                        <input type="submit" value="Revenir au menu principal">
                     </form>
                 </div>
             </div>

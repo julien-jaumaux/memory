@@ -258,24 +258,24 @@ isEnd();
         session_register_shutdown(); ?>
         <div class="end-game__container">
             <div class="end-ann_container">
-                <h1>YOU WON!!!</h1>
+                <h1>Félicitations!!!</h1>
                 <?php if ($finalCount != 0): ?>
-                <h3>Your score is: <?=$finalCount?></h3>
+                <h3>Votre score est de : <?=$finalCount?></h3>
                 <div class="end-ann_container__add-block">
                     <form action="" method="post">
                         <h4>entrez votre nom: </h4>
                         <input type="text" name="username">
-                        <input type="submit" class="restart" name="adduser" value="Add User">
+                        <input type="submit" class="restart" name="adduser" value="Poster">
                     </form>
                 </div>                
                 <?php endif;?>                 
                 <div class="end-ann_container__btn-block">
                     <form action="index.php" method="post">
-                        <input type="submit" class="restart" name="reset" value="START NEW GAME">
+                        <input type="submit" class="restart" name="reset" value="Nouvelle partie">
                     </form>
                 </div>
                 <div class="topscorers">
-                    <h4>Top Scorers:</h4>
+                    <h4>Classement:</h4>
                     <ul>
                         <?php foreach (showTopScorers() as $val): ?>
                             <li>                                
@@ -287,7 +287,7 @@ isEnd();
             </div>
             <div class="end-ann_container profiles">
                 <form action="./profiles.php">
-                    <input type="submit" class="restart" value="VIEW PROFILES">
+                    <input type="submit" class="restart" value="Voir le classement">
                 </form>
             </div>
         </div>
