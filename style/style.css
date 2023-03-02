@@ -14,7 +14,7 @@ input[type="submit"] {
 }
 
 .game-container {
-    height: 100vh;
+    /* height: 100vh; */
     overflow: hidden;
     padding: 1em;    
 }
