@@ -39,7 +39,7 @@ for ($i = 0; $i < $_SESSION['pairNmbr']*2; $i++) {
 
 function verify($key, $pairsNumber)
 {
-    //--(ici on compare la correspondance des [clé] qui une valeur de chaine de caractère qui valent 5 (imgo->img8) )
+    //--(ici on compare la correspondance des [clé] qui une valeur de chaine de caractère qui valent 5 (img0->img8) )
     if (strlen($key) == 5) {
         $charToVerify = (int) $key[-1];
         
@@ -47,7 +47,7 @@ function verify($key, $pairsNumber)
             $lastChar = (int) $key[-1] + 1;
             $val = substr($key, 0, -1);
             $cellUp = $val . $lastChar;
-            //---condition de clic (post) sur la première carte et maintien de la position retournée---//
+            //---condition de clic (post) sur les carte choisies et maintien de la position retournée---//
             if (
                 isset($_POST[$key]) && $_POST[$key] == $key &&
                 (!isset($_SESSION['verify']) || $_SESSION['verify'] != 'stanby')
@@ -56,7 +56,6 @@ function verify($key, $pairsNumber)
                 $_SESSION['verify'] = 'stanby';
 
             } elseif (
-                  
                 isset($_POST[$key]) && $_POST[$key] == $key &&
                 isset($_SESSION['verify']) && $_SESSION['verify'] == 'stanby' &&
                 isset($_SESSION[$cellUp]) && $_SESSION[$cellUp] == 'on'
@@ -68,7 +67,7 @@ function verify($key, $pairsNumber)
                 isset($_SESSION['verify']) && $_SESSION['verify'] == 'stanby' &&
                 ((isset($_SESSION[$cellUp]) && $_SESSION[$cellUp] != 'on') || !isset($_SESSION[$cellUp]))
             ) {
-
+// applique le verify sur les cartes cliquées choisies//
                 for ($i = 1; $i <= $pairsNumber * 2; $i++) {
                     $_SESSION['cell' . $i] = '';
                 }
@@ -82,13 +81,13 @@ function verify($key, $pairsNumber)
             ) {
                 $_SESSION['corr' . $charToVerify . $lastChar] = 'yes';
             }
-
+//si condition non vérifiées les cartes sont replacées face retournée----///
         } else {
-            //si condition non vérifiées les cartes sont replacées face retournée----///
+            
             $lastChar = (int) $key[-1] - 1;
             $val = substr($key, 0, -1);
             $cellDown = $val . $lastChar;
-
+//vérification de correspondanve des cartes retournées avec celles choisies dans le clic précedent//
             if (
                 isset($_POST[$key]) && $_POST[$key] == $key &&
                 (!isset($_SESSION['verify']) || $_SESSION['verify'] != 'stanby')
@@ -226,7 +225,7 @@ function adduser($username, $final) {
     $query = "INSERT INTO utilisateurs (id, name, score) VALUES (null, '$username', '$final')";
     $mysqli->query($query);    
 }
-//fonction qui trie le classement par ordre de sore décroissant
+//fonction qui trie le classement par ordre de score décroissant
 function showTopScorers() {
     $mysqli = new mysqli('localhost', 'root', '', 'memory');
     $query = "SELECT name, score FROM utilisateurs ORDER BY score DESC LIMIT 10";
@@ -303,7 +302,7 @@ isEnd();
     <div class="game-container">                
         <div class="game">            
             <?php foreach ($cards as $key=>$val): ?>
-<!-- ci desuus on génère l'affichage du tableau de jeu en utilisan les méthodes apliquer à la classe card-->
+<!-- ci dessous on génère l'affichage du tableau de jeu en utilisant les méthodes apliquer à la classe card-->
             <div class="game-cell" style="order: <?=$_SESSION['order'][$key]?>;">
                 <form action="" method="post" style="<?= isset($_SESSION[$val->generateNum()]) && $_SESSION[$val->generateNum()] == 'yes' ? 'display: none' : ''?>">
                     <input type="submit" name=<?=$val->cellNumber()?> value=<?=$val->cellNumber()?>>

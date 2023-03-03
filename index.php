@@ -37,7 +37,7 @@ if(isset($_SESSION)) {
             <p><i>Minimum 2 / maximum 12 </i></p>
             <?php endif;?>
             <h2>Selectionner un nombre de paire entre 2 et 12</h2>
-<!----on récupère les valeur $_SESSION['pairNmbr] et on demarre la session-->           
+<!----on récupère les valeur $_SESSION['pairNmbr] et on demarre la partie-->           
             <form action="" method="post">
                 <input type="text" name="start" class="restart">
                 <input type="submit" value="START GAME" class="restart">
